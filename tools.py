@@ -83,6 +83,85 @@ def get_mouse_position():
     """
     return pyautogui.position()
 
+# ===== SCROLLING FUNCTIONS =====
+
+def scroll(clicks, x=None, y=None):
+    """
+    Scroll the mouse wheel by the specified number of "clicks".
+    Positive values scroll up, negative values scroll down.
+    
+    Args:
+        clicks (int): Number of "clicks" to scroll. Positive scrolls up, negative scrolls down.
+        x (int, optional): X-coordinate to move to before scrolling
+        y (int, optional): Y-coordinate to move to before scrolling
+    """
+    if x is not None and y is not None:
+        move_mouse(x, y)
+    
+    pyautogui.scroll(clicks)
+
+def scroll_down(amount=3, x=None, y=None):
+    """
+    Scroll down by a specified amount.
+    
+    Args:
+        amount (int): Number of "clicks" to scroll down (default: 3)
+        x (int, optional): X-coordinate to move to before scrolling
+        y (int, optional): Y-coordinate to move to before scrolling
+    """
+    scroll(-amount, x, y)
+
+def scroll_up(amount=3, x=None, y=None):
+    """
+    Scroll up by a specified amount.
+    
+    Args:
+        amount (int): Number of "clicks" to scroll up (default: 3)
+        x (int, optional): X-coordinate to move to before scrolling
+        y (int, optional): Y-coordinate to move to before scrolling
+    """
+    scroll(amount, x, y)
+
+def page_down(x=None, y=None):
+    """
+    Scroll down by a larger amount (equivalent to Page Down).
+    
+    Args:
+        x (int, optional): X-coordinate to move to before scrolling
+        y (int, optional): Y-coordinate to move to before scrolling
+    """
+    scroll_down(10, x, y)
+
+def page_up(x=None, y=None):
+    """
+    Scroll up by a larger amount (equivalent to Page Up).
+    
+    Args:
+        x (int, optional): X-coordinate to move to before scrolling
+        y (int, optional): Y-coordinate to move to before scrolling
+    """
+    scroll_up(10, x, y)
+
+def scroll_to_top():
+    """
+    Attempt to scroll to the top of the current view.
+    This uses keyboard shortcut Command+Home or Home depending on context.
+    """
+    try:
+        pyautogui.hotkey('command', 'home')
+    except:
+        pyautogui.press('home')
+
+def scroll_to_bottom():
+    """
+    Attempt to scroll to the bottom of the current view.
+    This uses keyboard shortcut Command+End or End depending on context.
+    """
+    try:
+        pyautogui.hotkey('command', 'end')
+    except:
+        pyautogui.press('end')
+
 # ===== KEYBOARD FUNCTIONS =====
 
 def type_text(text, interval=0.05):
@@ -144,3 +223,20 @@ if __name__ == "__main__":
     
     # Example: Type text
     # type_text("Hello, world!")
+    
+    # Example: Scroll down
+    # scroll_down()
+    
+    # Example: Page down
+    # page_down()
+
+    # how it should work: take screenshot of the current screen, then the llm analyzes it and decides what element to 
+    #look for. the it passes that as its output into the grounding model, which finds the coordinates for that element
+    #then it passes those coordinates into the tools to click on the elemnt, suppose i want to do scrolling:
+    #for scrolling, we do not need the grounding model, the llm can just issue the tool call direcrlt. 
+    #actually, it would be a good idea for the grounding model to be a tool call. the click and the grounding model can be embedded one.
+    #a good idea would be to make it so anytime that i click, i need to use the grounding model.
+    #okay so i will use the grounding model anytime that i need to click on something and everytime or use the keyboard
+    #yeah i only need the grounding model for clicking.
+    #everything else should be doable otherwise
+    #ccol i am on my way to make an agent!

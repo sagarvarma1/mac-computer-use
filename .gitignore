@@ -21,3 +21,5 @@ build/
 secrets.json
 config.yaml
 images/
+.ipynb_checkpoints/
+*.ipynb
