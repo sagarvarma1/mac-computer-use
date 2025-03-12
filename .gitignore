@@ -20,3 +20,4 @@ build/
 *.out
 secrets.json
 config.yaml
+images/
